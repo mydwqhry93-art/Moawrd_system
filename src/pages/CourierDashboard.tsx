@@ -1,9 +1,9 @@
-
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { supabase } from '../utils/supabase';
 import { MapPin, PackageCheck, Phone, Navigation, Clock, CheckCircle2, LogOut } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 export default function CourierDashboard() {
     const [deliveries, setDeliveries] = useState<any[]>([]);
@@ -35,6 +35,13 @@ export default function CourierDashboard() {
             }
 
             setDriverId(user.id);
+
+            // 🛠️ الخطوة الجديدة: تحديث حالة المندوب في قاعدة البيانات إلى متصل/نشط
+            await supabase
+                .from('profiles')
+                .update({ ois_online: true }) // تأكد من اسم الحقل لديك في جدول الـ profiles (مثلاً status: 'online' أو is_online: true)
+                .eq('id', user.id);
+
             // 3. جلب طلبات المندوب الحقيقية
             await fetchActiveDeliveries(user.id);
         } catch (error) {
@@ -43,7 +50,24 @@ export default function CourierDashboard() {
         }
     };
 
-    // جلب الطلبات النشطة الموجهة لهذا المندوب (المعينة له أو المستلمة وقيد التوصيل)
+    // دالة تسجيل الخروج الآمنة وتحديث الحالة إلى غير متصل
+    const handleLogout = async () => {
+        try {
+            if (driverId) {
+                // 🛠️ تحويل الحالة إلى غير متصل قبل مغادرة الحساب
+                await supabase
+                    .from('profiles')
+                    .update({ is_online: false })
+                    .eq('id', driverId);
+            }
+            await supabase.auth.signOut();
+            navigate('/login');
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
+    };
+
+    // جلب الطلبات النشطة الموجهة لهذا المندوب
     const fetchActiveDeliveries = async (currentDriverId: string) => {
         try {
             setLoading(true);
@@ -54,8 +78,8 @@ export default function CourierDashboard() {
                     profiles!retailer_id ( full_name ),
                     supplier_profile:profiles!supplier_id ( full_name )
                 `)
-                .eq('driver_id', currentDriverId) // فلترة بالـ ID الخاص بالمندوب الحالي
-                .in('status', ['assigned', 'picked_up']) // عرض الحالات النشطة فقط
+                .eq('driver_id', currentDriverId) 
+                .in('status', ['assigned', 'picked_up']) 
                 .order('created_at', { ascending: true });
 
             if (error) throw error;
@@ -73,7 +97,7 @@ export default function CourierDashboard() {
         const statusText = nextStatus === 'picked_up' ? 'تم استلام الشحنة من المورد' : 'تم التوصيل والتحصيل بنجاح';
         
         Swal.fire({
-            title: 'تحديث حالة الشحنة؟',
+            title: 'تحديث حالة الشحنة？',
             text: `هل تريد تغيير حالة الطلب إلى: ${nextStatus === 'picked_up' ? 'قيد التوصيل' : 'مكتمل'}؟`,
             icon: 'question',
             showCancelButton: true,
@@ -101,7 +125,6 @@ export default function CourierDashboard() {
                         confirmButtonColor: '#dc2626'
                     });
 
-                    // إعادة تحميل البيانات بعد التحديث الناجح
                     fetchActiveDeliveries(driverId);
                 } catch (err: any) {
                     Swal.fire('خطأ', err.message, 'error');
@@ -128,7 +151,7 @@ export default function CourierDashboard() {
                             <span className="text-emerald-500 text-xs font-bold uppercase">متصل الآن</span>
                         </div>
                         <button 
-                            onClick={async () => { await supabase.auth.signOut(); navigate('/login'); }}
+                            onClick={handleLogout}
                             className="p-2 bg-white/5 border border-slate-800 text-slate-400 hover:text-red-500 hover:border-red-500/30 transition-all rounded-sm"
                             title="تسجيل الخروج"
                         >
@@ -163,7 +186,7 @@ export default function CourierDashboard() {
                                         </div>
                                     </div>
 
-                                    {/* تفاصيل المسار الحركية */}
+                                    {/* تفاصيل المسار */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                                         <div className="flex items-start gap-3 bg-black/40 p-3 border border-slate-900">
                                             <MapPin className="text-slate-500 mt-1" size={18} />
@@ -179,7 +202,7 @@ export default function CourierDashboard() {
                                                 <p className="text-sm text-slate-300">{delivery.address_note || 'لم يتم كتابة وصف دقيق للعنوان'}</p>
                                                 {delivery.latitude && (
                                                     <button 
-                                                        onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${delivery.latitude},${delivery.longitude}`, '_blank')}
+                                                        onClick={() => window.open(`http://maps.google.com/?q=${delivery.latitude},${delivery.longitude}`, '_blank')}
                                                         className="text-[9px] font-black text-red-500 hover:underline mt-1 block"
                                                     >
                                                         فتح الموقع الخريطة 🌍 ←
@@ -208,7 +231,7 @@ export default function CourierDashboard() {
                                     </div>
                                 </div>
                                 
-                                {/* بار الحالة الحقيقي في الأسفل */}
+                                {/* بار الحالة */}
                                 <div className="bg-slate-900/30 px-6 py-2 border-t border-slate-800 flex items-center gap-2">
                                     <CheckCircle2 size={12} className={delivery.status === 'picked_up' ? 'text-amber-500' : 'text-red-500'} />
                                     <span className="text-[10px] font-mono text-slate-500 uppercase tracking-[0.2em]">

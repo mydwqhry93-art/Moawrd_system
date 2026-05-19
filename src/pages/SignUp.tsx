@@ -19,7 +19,6 @@ export default function SignUp() {
 
         try {
             // 1. تسجيل الحساب وإرسال البيانات للـ Metadata
-            // الـ Trigger اللي سويناه في DBeaver بياخذ full_name و phone من هنا ويحطهم في Profiles تلقائياً
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: email.trim(),
                 password: password,
@@ -35,6 +34,7 @@ export default function SignUp() {
             if (authError) throw authError;
 
             if (authData?.user) {
+               
                 Swal.fire({
                     icon: 'success',
                     title: 'تم الانضمام بنجاح!',
@@ -49,8 +49,8 @@ export default function SignUp() {
                 // تفريغ الحقول
                 setName(''); setEmail(''); setPassword(''); setPhone('');
                 
-                // التوجه لصفحة تسجيل الدخول
-                setTimeout(() => navigate('/login'), 3000);
+                // 🛠️ التعديل هنا: التوجيه إلى المسار الرئيسي المعتمد لصفحة الدخول بحرف صغير "/"
+                setTimeout(() => navigate('/'), 3000);
             }
         } catch (err: any) {
             Swal.fire({
@@ -93,7 +93,7 @@ export default function SignUp() {
                         <form onSubmit={handleSignUp} className="space-y-5">
                             {/* الاسم الكامل */}
                             <div className="space-y-2 text-right">
-                                <label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mr-1">الإسم الكامل</label>
+                                <label className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mr-1">إلإسم الكامل</label>
                                 <div className="relative group">
                                     <input type="text" required placeholder="الاسم الثلاثي..." value={name}
                                         className="w-full pl-4 pr-11 py-3 bg-[#050505] border border-slate-800 rounded-sm focus:border-red-600 outline-none transition-all text-red-500"
@@ -103,10 +103,10 @@ export default function SignUp() {
                             </div>
 
                             {/* رقم الهاتف */}
-                            <div   className="space-y-2 text-right">
+                            <div className="space-y-2 text-right">
                                 <label htmlFor="phoneInput" className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mr-1">رقم التواصل</label>
                                 <div className="relative group">
-                                    <input id="phoneInput"   type="tel" required placeholder="7xxxxxxxx" value={phone}
+                                    <input id="phoneInput" type="tel" required placeholder="7xxxxxxxx" value={phone}
                                         className="w-full pl-4 pr-11 py-3 bg-[#050505] border border-slate-800 rounded-sm focus:border-red-600 outline-none transition-all text-red-500 font-mono"
                                         onChange={(e) => setPhone(e.target.value)} />
                                     <Phone className="absolute right-3.5 top-3.5 text-slate-600 size-5" />
@@ -130,7 +130,7 @@ export default function SignUp() {
 
                             {/* البريد الإلكتروني */}
                             <div className="space-y-2 text-right">
-                                <label  htmlFor="emailInput" className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mr-1">البريد الإلكتروني</label>
+                                <label htmlFor="emailInput" className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mr-1">البريد الإلكتروني</label>
                                 <div className="relative group">
                                     <input id="emailInput" type="email" required placeholder="name@morid.sys" value={email}
                                         className="w-full pl-4 pr-11 py-3 bg-[#050505] border border-slate-800 rounded-sm focus:border-red-600 outline-none text-red-500 font-mono"
@@ -141,9 +141,9 @@ export default function SignUp() {
 
                             {/* كلمة المرور */}
                             <div className="space-y-2 text-right">
-                                <label  htmlFor="passInput" className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mr-1">رمز الدخول</label>
+                                <label htmlFor="passInput" className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mr-1">رمز الدخول</label>
                                 <div className="relative group">
-                                    <input id="passlInput" type="password" required placeholder="••••••••" value={password}
+                                    <input id="passInput" type="password" required placeholder="••••••••" value={password}
                                         className="w-full pl-4 pr-11 py-3 bg-[#050505] border border-slate-800 rounded-sm focus:border-red-600 outline-none text-red-500"
                                         onChange={(e) => setPassword(e.target.value)} />
                                     <Lock className="absolute right-3.5 top-3.5 text-slate-600 size-5" />
@@ -151,14 +151,14 @@ export default function SignUp() {
                             </div>
 
                             <button disabled={loading} className="w-full bg-red-700 hover:bg-red-600 text-white font-bold py-4 rounded-sm transition-all flex items-center justify-center gap-3 disabled:opacity-50">
-                                {loading ? "جارِ المعالجة..." : "تأكيد أن شاء الحساب"}
+                                {loading ? "جارِ المعالجة..." : "تأكيد إنشاء الحساب"}
                                 {!loading && <UserPlus className="size-5" />}
                             </button>
                         </form>
 
                         <div className="mt-8 text-center border-t border-slate-900 pt-6">
                             <p className="text-[13px] text-slate-500">
-                                لديك حساب بالفعل؟ <Link to="/login" className="text-red-600 font-bold underline">تسجيل الدخول</Link>
+                                لديك حساب بالفعل؟ <Link to="/" className="text-red-600 font-bold underline">تسجيل الدخول</Link>
                             </p>
                         </div>
                     </div>

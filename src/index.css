@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+@layer utilities {
+  @keyframes border-spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-border-spin {
+    animation: border-spin 4s linear infinite;
+  }
+}
+
+
+@keyframes pulse-red {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-pulse-red {
+  animation: pulse-red 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+
+
+
+/* -------------------------------------------------------------
+    🔥 السحر الخاص بـ v4 لقلب الألوان بدون تعديل الصفحات
+   ------------------------------------------------------------- */
+
+/* 1️⃣ إجبار الخلفية الأساسية (البدي والـ html) على التغير */
+html.light,
+body.light,
+.light {
+  background-color: #f8fafc !important; /* خلفية نهارية ناعمة */
+  color: #0f172a !important;            /* نصوص غامقة */
+}
+
+/* 2️⃣ استهداف حاويات الصفحات التي تحتوي على bg-[#050505] الثابت */
+.light .bg-\[\#050505\],
+.light .bg-black {
+  background-color: #f8fafc !important;
+}
+
+/* 3️⃣ تحويل كروت الموردين والمنتجات الداكنة تلقائياً إلى كروت نهارية بيضاء بنظافة */
+.light .bg-\[\#0d0d0d\],
+.light .bg-\[\#0a0a0a\],
+.light .bg-\[\#080808\],
+.light .bg-slate-900,
+.light .bg-slate-950,
+.light .bg-slate-900\/30,
+.light .bg-slate-950\/40 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* 4️⃣ تحويل العناوين والنصوص البيضاء لتصبح داكنة ومقروءة في النهار */
+.light .text-white,
+.light .text-slate-200,
+.light .text-slate-100,
+.light h1,
+.light h3,
+.light p {
+  color: #0f172a !important;
+}
+
+/* 5️⃣ تحويل حقول الإدخال (Inputs) لتناسب وضع النهار */
+.light input {
+  color: #0f172a !important;
+}
+.light input::placeholder {
+  color: #94a3b8 !important; /* بليدجهولدر رمزي وواضح في النهار */
+}
+
+/* 6️⃣ الحفاظ على أزرار وشارات البراند باللون الأحمر النيون دون أن تتأثر بالقلب */
+.light .bg-red-700,
+.light .bg-red-600,
+.light .text-red-600,
+.light .text-red-500,
+.light .text-red-400 {
+  filter: none !important;
+}
+
+
+/* -------------------------------------------------------------
+   📱 سحر التجاوب التلقائي لجميع الشاشات والجوالات 
+   ------------------------------------------------------------- */
+
+/* إجبار الحاويات الكبرى على عدم تجاوز عرض شاشة الجوال */
+html, body, #root {
+  max-width: 100vw;
+  overflow-x: hidden; /* يمنع ظهور شريط التمرير الأفقي المزعج في الجوال */
+}
+
+/* حل مشكلة الجداول الكبيرة (مثل قوائم الطلبات أو المنتجات) */
+table {
+  display: block;
+  width: 100% !important;
+  overflow-x: auto; /* إذا كان الجدول عريضاً، يسمح للمستخدم بسحبه يميناً ويساراً داخل الجوال دون تخريب الصفحة */
+  white-space: nowrap;
+}
+
+/* ضبط الهوامش تلقائياً في الشاشات الصغيرة لحماية الكروت */
+@media (max-width: 768px) {
+  /* تصغير حجم الخطوط الكبيرة جداً تلقائياً في الجوال لكي لا تنكسر العناوين */
+  h1 { font-size: 1.8rem !important; }
+  h2 { font-size: 1.5rem !important; }
+  
+  /* الحاويات التي تحتوي على أزرار بجانب بعضها تقلب رأسياً في الجوال */
+  .flex-row-responsive {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+}
+/* -------------------------------------------------------------
+   👑 حل الـ Scroll الأنيق للهيدر المزدحم (بدون تعفين)
+   ------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  /* 1️⃣ إجبار الهيدر على البقاء كسطر واحد بارتفاع أنيق ومتناسق */
+  header, nav, .header-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 65px !important;
+    padding: 0 0.75rem !important;
+    gap: 1rem !important;
+    overflow: visible !important;
+  }
+
+  /* 2️⃣ تثبيت الشعار في مكانه باليمين بدون ما ينضغط */
+  header > div:first-child, 
+  nav > div:first-child {
+    flex-shrink: 0 !important; /* ممنوع اللوجو ينعصر */
+  }
+
+  /* 3️⃣ السحر: تحويل حاوية الأزرار الكثيرة إلى شريط مرن (Scrollable) */
+  header .flex.items-center, 
+  nav .flex.items-center,
+  header > div:nth-child(2),
+  nav > div:nth-child(2) {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    
+    /* تفعيل السحب الأفقي الناعم بالإصبع */
+    overflow-x: auto !important; 
+    white-space: nowrap !important; /* منع الأزرار من النزول تحت بعض نهائياً */
+    
+    /* تحسين شكل السحب في الجوال */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.25rem 0 !important;
+  }
+
+  /* 4️⃣ إخفاء شريط التمرير (Scrollbar) المزعج ليبقى التصميم رايق ونظيف */
+  header .flex.items-center::-webkit-scrollbar,
+  nav .flex.items-center::-webkit-scrollbar {
+    display: none !important; /* يختفي الخط السفلي ويبقى السحب شغال */
+  }
+
+  /* 5️⃣ حماية الأزرار من الانضغاط وتصغير حجمها لتبدو احترافية */
+  header button, nav button, header a, nav a {
+    flex-shrink: 0 !important; /* يمنع تشوه أو انضغاط عرض الزر */
+    padding: 0.4rem 0.75rem !important;
+    font-size: 11px !important;
+    border-radius: 4px !important;
+  }
+}

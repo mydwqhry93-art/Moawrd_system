@@ -15,7 +15,7 @@ export default function Login() {
 
 
     // await  عشان ننتظر رد قاعدة البيانات بدون ما نجمد واجهة المستخدم
-    const handlelogin = async (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault(); // يمنع الصفحة من تحديث نفسها (الافتراضي في المتصفح)
         setLoading(true);// تشغيل وضع التحميل لتجميد الزر
 
@@ -124,7 +124,7 @@ export default function Login() {
                             <p className="text-slate-300 text-[11px] uppercase tracking-[0.4em] font-bold">نظام الإدارة المتكامل</p>
                         </header>
 
-                        <form onSubmit={handlelogin} className="space-y-6">
+                        <form onSubmit={handleLogin} className="space-y-6">
                             <div className="space-y-2 text-right">
                                 <label htmlFor="emailInput"  className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mr-1">معرف الوصول الرسمي</label>
                                 <div className="relative group">

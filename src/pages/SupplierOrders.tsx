@@ -18,9 +18,9 @@ const SupplierOrders = () => {
 
     const checkUserAndFetchOrders = async () => {
         try {
-        
+            
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) { navigate('/Login'); return; }
+            if (!user) { navigate('/login'); return; }
 
             const { data: profile } = await supabase
                 .from('profiles')

@@ -94,21 +94,16 @@ export default function App() {
           {session && <Navbar />}
           <div className="min-h-screen bg-[#050505]">
             <Routes>
-              {/* توجيه ذكي: إذا مسجل دخول وعمل ريفريش يروح للمنتجات فوراً بدلاً من الـ Login */}
-              <Route path="/" element={session ? <Navigate to="/ProductsList" /> : <Login />} />
-              <Route path="/signup" element={session ? <Navigate to="/ProductsList" /> : <SignUp />} />
-              
-              {/* باقي مسارات النظام */}
-              <Route path="/Addproduct/:id?" element={<AddProduct />} />
-              <Route path="/ProductsList" element={<ProductsList />} />
-              <Route path="/SuppliersList" element={<SuppliersList />} />
-              <Route path="/SupplierProducts/:id" element={<SupplierProducts />} />
-              <Route path="/CourierDashboard" element={<CourierDashboard />} />
-              <Route path="/SupplierOrders" element={<SupplierOrders />} />
-              <Route path="/profile" element={<Profile />} />
-
-              {/* حماية من المسارات العشوائية */}
-              <Route path="*" element={<Navigate to={session ? "/SuppliersList" : "/"} />} />
+                <Route path="/" element={<Login />} />
+               <Route path="/signup" element={<SignUp />} />
+               <Route path="/Addproduct/:id?" element={<AddProduct />} />
+               <Route path="/ProductsList" element={<ProductsList />} />
+               <Route path="/SuppliersList" element={<SuppliersList />} />
+               <Route path="/SupplierProducts/:id" element={<SupplierProducts />} />
+               <Route path="/CourierDashboard" element={<CourierDashboard />} />
+               <Route path="/SupplierOrders" element={<SupplierOrders />} />
+               <Route path="/profile" element={<Profile />} />
+              {/* <Route path="*" element={<Navigate to="/" />} /> */}
             </Routes>
           </div>
         </>

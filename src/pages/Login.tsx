@@ -172,7 +172,7 @@ export default function Login() {
                                 <p className="text-[13px] text-slate-500 font-sans">
                                     ليس لديك حساب؟{' '}
                                     <Link
-                                        to="/Signup"
+                                        to="/signup"
                                         className="text-red-600 hover:text-red-500 font-bold transition-all underline underline-offset-8 decoration-red-900/50"
                                     >
                                         تقديم طلب تسجيل جديد

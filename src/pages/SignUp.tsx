@@ -18,7 +18,7 @@ export default function CourierDashboard() {
         try {
             // 1. جلب بيانات المندوب المسجل حالياً
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) { navigate('/login'); return; }
+            if (!user) { navigate('/Login'); return; }
 
             // 2. التحقق من صلاحية الحساب للتأكد أنه مندوب (delivery)
             const { data: profile } = await supabase
@@ -60,7 +60,7 @@ export default function CourierDashboard() {
                     .eq('id', driverId);
             }
             await supabase.auth.signOut();
-            navigate('/login');
+            navigate('/Login');
         } catch (error) {
             console.error("Error logging out:", error);
         }

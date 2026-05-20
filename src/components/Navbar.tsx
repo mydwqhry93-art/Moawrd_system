@@ -71,7 +71,7 @@ export default function Navbar() {
         if (result.isConfirmed) {
             await supabase.auth.signOut();
             setUserData(null);
-            navigate('/login');
+            navigate('/Login');
         }
     };
 

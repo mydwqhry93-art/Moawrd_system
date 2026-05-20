@@ -19,7 +19,7 @@ export default function CourierDashboard() {
         try {
             // 1. جلب بيانات المندوب المسجل حالياً
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) { navigate('/login'); return; }
+            if (!user) { navigate('/Login'); return; }
 
             // 2. التحقق من صلاحية الحساب للتأكد أنه مندوب (delivery)
             const { data: profile } = await supabase
@@ -39,7 +39,7 @@ export default function CourierDashboard() {
             // 🛠️ الخطوة الجديدة: تحديث حالة المندوب في قاعدة البيانات إلى متصل/نشط
             await supabase
                 .from('profiles')
-                .update({ ois_online: true }) // تأكد من اسم الحقل لديك في جدول الـ profiles (مثلاً status: 'online' أو is_online: true)
+                .update({ is_online: true }) // تأكد من اسم الحقل لديك في جدول الـ profiles (مثلاً status: 'online' أو is_online: true)
                 .eq('id', user.id);
 
             // 3. جلب طلبات المندوب الحقيقية
@@ -61,7 +61,7 @@ export default function CourierDashboard() {
                     .eq('id', driverId);
             }
             await supabase.auth.signOut();
-            navigate('/login');
+            navigate('/Login');
         } catch (error) {
             console.error("Error logging out:", error);
         }

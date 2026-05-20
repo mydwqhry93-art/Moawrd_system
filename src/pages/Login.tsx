@@ -114,7 +114,7 @@ export default function Login() {
                         <header className="mb-12 text-right">
                             <div className="flex items-center gap-4 mb-4">
                                 <div className="p-2.5 bg-red-900/20 border border-red-600/30 rounded shadow-[0_0_15px_rgba(220,38,38,0.2)]">
-                                    <img src='./public/logo.png' className="text-red-500 size-7"alt='شعار النظام' />
+                                    <img src='src="/logo.png"' className="text-red-500 size-7"alt='شعار النظام' />
                                 </div>
                                 <div className="flex flex-col">
                                     <h1 className="text-4xl font-black tracking-tight text-white mb-0">مورّد</h1>
